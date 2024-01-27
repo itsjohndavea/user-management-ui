@@ -1,27 +1,30 @@
 "use client";
-
 import { Dialog, Transition } from "@headlessui/react";
+import React from "react";
 import { Fragment, useState } from "react";
-import UserList from "../components/UserList";
+import UserList from "./UserList";
 
 const AddUser = () => {
-  const API_URI = "http://localhost:8080/api/v1/users";
+  const USER_API_BASE_URL = "http://localhost:8080/api/v1/users";
+
   const [isOpen, setIsOpen] = useState(false);
-  const [responseUser, setResponseUser] = useState({
-    id: "",
-    firstName: "",
-    lastName: "",
-    emailId: "",
-  });
   const [user, setUser] = useState({
     id: "",
     firstName: "",
     lastName: "",
     emailId: "",
   });
+  const [responseUser, setResponseUser] = useState({
+    id: "",
+    firstName: "",
+    lastName: "",
+    emailId: "",
+  });
+
   function closeModal() {
     setIsOpen(false);
   }
+
   function openModal() {
     setIsOpen(true);
   }
@@ -33,7 +36,7 @@ const AddUser = () => {
 
   const saveUser = async (e) => {
     e.preventDefault();
-    const response = await fetch(API_URI, {
+    const response = await fetch(USER_API_BASE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +44,7 @@ const AddUser = () => {
       body: JSON.stringify(user),
     });
     if (!response.ok) {
-      throw new Error("Some Went Wrong");
+      throw new Error("Something went wrong");
     }
     const _user = await response.json();
     setResponseUser(_user);
@@ -65,8 +68,7 @@ const AddUser = () => {
         <div className="h-12">
           <button
             onClick={openModal}
-            type="button"
-            className="rounded bg-slate-600 text-white px-6 py-2 font-semibold hover:bg-slate-950 hover:text-white"
+            className="rounded bg-slate-600 text-white px-6 py-2 font-semibold"
           >
             Add User
           </button>
@@ -82,76 +84,74 @@ const AddUser = () => {
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
               leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className=" inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-md">
+              <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-md">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-black"
+                  className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Add New User
+                  Add new User
                 </Dialog.Title>
                 <div className="flex max-w-md max-auto">
-                  <div className="py-2 px-2">
-                    <div className="h-60 my-4">
+                  <div className="py-2">
+                    <div className="h-14 my-4">
                       <label className="block text-gray-600 text-sm font-normal">
-                        FirstName
+                        First Name
                       </label>
                       <input
                         type="text"
                         name="firstName"
-                        className="h-10 px-2 w-96 border py-3 mt-2"
-                        placeholder="John"
                         value={user.firstName}
                         onChange={(e) => handleChange(e)}
-                        required
+                        className="h-10 w-96 border mt-2 px-2 py-2"
                       ></input>
+                    </div>
+                    <div className="h-14 my-4">
                       <label className="block text-gray-600 text-sm font-normal">
-                        LastName
+                        Last Name
                       </label>
                       <input
                         type="text"
                         name="lastName"
-                        className="h-10 px-2 w-96 border py-3 mt-2"
-                        placeholder="Doe"
                         value={user.lastName}
                         onChange={(e) => handleChange(e)}
-                        required
+                        className="h-10 w-96 border mt-2 px-2 py-2"
                       ></input>
+                    </div>
+                    <div className="h-14 my-4">
                       <label className="block text-gray-600 text-sm font-normal">
-                        Email Address
+                        Email Id
                       </label>
                       <input
-                        type="email"
+                        type="text"
                         name="emailId"
-                        className="h-10 px-2 w-96 border py-3 mt-2"
                         value={user.emailId}
-                        required
-                        placeholder="example@examplemail.com"
                         onChange={(e) => handleChange(e)}
+                        className="h-10 w-96 border mt-2 px-2 py-2"
                       ></input>
+                    </div>
+                    <div className="h-14 my-4 space-x-4 pt-4">
                       <button
-                        className="mt-3 rounded bg-green-600 text-white px-6 py-2 font-semibold hover:bg-green-950 hover:text-white absolute bottom-8 right-32"
-                        type="button"
                         onClick={saveUser}
+                        className="rounded text-white font-semibold bg-green-400 hover:bg-green-700 py-2 px-6"
                       >
                         Save
                       </button>
                       <button
-                        className="mt-3 rounded bg-red-600 text-white px-6 py-2 font-semibold hover:bg-red-950 hover:text-white absolute bottom-8 right-8"
-                        type="button"
                         onClick={reset}
+                        className="rounded text-white font-semibold bg-red-400 hover:bg-red-700 py-2 px-6"
                       >
                         Close
                       </button>
                     </div>
                   </div>
                 </div>
-              </Dialog.Panel>
+              </div>
             </Transition.Child>
           </div>
         </Dialog>

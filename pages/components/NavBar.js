@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { space } from "postcss/lib/list";

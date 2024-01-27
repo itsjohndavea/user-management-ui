@@ -1,6 +1,10 @@
+"use client";
 import React from "react";
 
 const User = ({ user, deleteUser, editUser }) => {
+  if (!user) {
+    return null;
+  }
   return (
     <tr key={user.id}>
       <td className="text-left px-6 py-4 whitespace-nowrap">
@@ -20,8 +24,8 @@ const User = ({ user, deleteUser, editUser }) => {
           Edit
         </a>
         <a
-          className="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer"
           onClick={(e, id) => deleteUser(e, user.id)}
+          className="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer"
         >
           Delete
         </a>
